@@ -1,0 +1,14 @@
+import { MetadataRoute } from 'next'
+
+export default function robots(): MetadataRoute.Robots {
+  const BASE_URL = 'https://techpulse.dev' // Replace with actual domain
+
+  return {
+    rules: {
+      userAgent: '*',
+      allow: '/',
+      disallow: ['/admin/', '/dashboard?welcome=true'],
+    },
+    sitemap: `${BASE_URL}/sitemap.xml`,
+  }
+}
