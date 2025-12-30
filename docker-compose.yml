@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./backend
+    restart: always
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./backend/.env
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
+      - SUPABASE_JWT_SECRET=${SUPABASE_JWT_SECRET}
+      - RESEND_API_KEY=${RESEND_API_KEY}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+
+  frontend:
+    build: ./frontend
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://backend:8000/api/v1
+      # Supabase keys must be public, usually baked in at build time for static sites
+      # For runtime envs in containers, Next.js needs careful handling or public runtime config.
+      # For now, we assume strict build-time args or matching usage.
+    depends_on:
+      - backend
