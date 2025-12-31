@@ -27,6 +27,6 @@ jobs:
     - name: Run Ingestion Script
       env:
         DATABASE_URL: ${{ secrets.DATABASE_URL }}
-        GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        AI_PROVIDER: "simple"
       run: |
         python backend/run_ingestion.py
