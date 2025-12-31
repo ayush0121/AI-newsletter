@@ -55,7 +55,7 @@ class EmailService:
         Sends an email to new account users asking them to subscribe to the newsletter.
         """
         subject = "Welcome to SynapseDigest! One last step... 📧"
-        subscribe_url = "http://localhost:3000/subscribe" # In prod, read from settings.FRONTEND_URL
+        subscribe_url = f"{settings.FRONTEND_URL}/subscribe"
         
         html_content = f"""
         <div style="font-family: sans-serif; max-w: 600px; margin: 0 auto;">
