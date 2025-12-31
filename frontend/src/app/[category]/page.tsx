@@ -13,7 +13,7 @@ export async function generateMetadata({ params }: PageProps) {
     const { category } = await params;
     const categoryName = decodeURIComponent(category).replace('-', ' ');
     return {
-        title: `${categoryName.charAt(0).toUpperCase() + categoryName.slice(1)} News - TechPulse`,
+        title: `${categoryName.charAt(0).toUpperCase() + categoryName.slice(1)} News - SynapseDigest`,
     };
 }
 

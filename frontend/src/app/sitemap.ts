@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api/v1'
-    const BASE_URL = 'https://techpulse.dev' // Replace with actual domain
+    const BASE_URL = 'https://synapsedigest.dev' // Replace with actual domain
 
     // 1. Static Routes
     const routes = [

@@ -57,8 +57,8 @@ def send_onboarding_emails():
             logger.info(f"Sending Welcome Email to {user.email}")
             email_service.send_email(
                 user.email,
-                "Welcome to TechPulse! 🚀",
-                f"<h1>Hi {user.full_name or 'there'},</h1><p>Welcome to TechPulse...</p>"
+                "Welcome to SynapseDigest! 🚀",
+                f"<h1>Hi {user.full_name or 'there'},</h1><p>Welcome to SynapseDigest...</p>"
             )
             settings.welcome_email_sent = True
             settings.last_email_sent_at = now
@@ -68,7 +68,7 @@ def send_onboarding_emails():
             logger.info(f"Sending Day 1 Email to {user.email}")
             email_service.send_email(
                 user.email,
-                "How to use TechPulse like a pro",
+                "How to use SynapseDigest like a pro",
                 f"<h1>Getting Started...</h1>"
             )
             settings.day_1_email_sent = True
@@ -90,7 +90,7 @@ def send_onboarding_emails():
              logger.info(f"Sending Day 7 Check-in to {user.email}")
              email_service.send_email(
                 user.email,
-                "Loving TechPulse?",
+                "Loving SynapseDigest?",
                 f"<h1>Checking in...</h1>"
             )
              settings.day_7_email_sent = True

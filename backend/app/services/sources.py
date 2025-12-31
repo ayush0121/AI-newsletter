@@ -85,7 +85,7 @@ class ContentFetcher:
             for url in feed_urls:
                 try:
                     # Some RSS feeds block simple requests, might need User-Agent
-                    response = await client.get(url, timeout=10.0, headers={"User-Agent": "TechPulse/1.0"})
+                    response = await client.get(url, timeout=10.0, headers={"User-Agent": "SynapseDigest/1.0"})
                     feed = feedparser.parse(response.content)
                     
                     for entry in feed.entries[:10]: # Limit to top 10 most recent per feed

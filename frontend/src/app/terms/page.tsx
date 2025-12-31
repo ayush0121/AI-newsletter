@@ -1,15 +1,17 @@
 export default function TermsPage() {
     return (
         <div className="max-w-3xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-            <h1 className="text-3xl font-bold text-gray-900 mb-8">Terms of Service</h1>
+            <h1 className="text-3xl font-bold mb-6">Terms of Service</h1>
+            <p className="mb-4">
+                Welcome to SynapseDigest. By accessing our website, you agree to these terms.
+            </p>
+            <p>Last updated: December 30, 2025</p>
 
             <div className="prose prose-indigo">
-                <p>Last updated: December 30, 2025</p>
-
                 <h3>1. Agreement to Terms</h3>
                 <p>
                     These Terms of Use constitute a legally binding agreement made between you, whether personally or on behalf of an entity (“you”)
-                    and TechPulse ("we," “us” or “our”), concerning your access to and use of the TechPulse website as well as any other media form,
+                    and SynapseDigest ("we," “us” or “our”), concerning your access to and use of the SynapseDigest website as well as any other media form,
                     media channel, mobile website or mobile application related, linked, or otherwise connected thereto (collectively, the “Site”).
                 </p>
 

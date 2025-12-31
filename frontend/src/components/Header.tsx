@@ -21,9 +21,9 @@ export default function Header() {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center h-16">
                     <div className="flex-shrink-0 flex items-center">
-                        <Link href="/" className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">
-                            TechPulse
-                        </Link>
+                        <span className="ml-2 text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600">
+                            SynapseDigest
+                        </span>
                     </div>
                     <nav className="hidden md:flex space-x-8 items-center">
                         {navItems.map((item) => (

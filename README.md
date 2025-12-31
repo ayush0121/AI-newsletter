@@ -1,4 +1,4 @@
-# TechPulse - Automated AI & Tech News SaaS
+# SynapseDigest - Automated AI & Tech News SaaS
 
 A fully automated, constantly refreshing web application that displays daily news, research updates, and developments in AI, CS, and Software Engineering.
 

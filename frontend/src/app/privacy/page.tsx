@@ -4,13 +4,18 @@ export default function PrivacyPage() {
             <h1 className="text-3xl font-bold text-gray-900 mb-8">Privacy Policy</h1>
 
             <div className="prose prose-indigo">
-                <p>Last updated: December 30, 2025</p>
+                <p className="mb-4">
+                    Last updated: {new Date().toLocaleDateString()}
+                </p>
+                <p className="mb-4">
+                    Creating an account with SynapseDigest is optional. You can read all our content without registering.
+                </p>
 
                 <h3>1. Introduction</h3>
                 <p>
-                    Welcome to TechPulse ("we", "our", or "us"). We are committed to protecting your personal information and your right to privacy.
+                    Welcome to SynapseDigest ("we", "our", or "us"). We are committed to protecting your personal information and your right to privacy.
                     If you have any questions or concerns about this privacy notice, or our practices with regards to your personal information,
-                    please contact us at support@techpulse.dev.
+                    please contact us at support@synapsedigest.dev.
                 </p>
 
                 <h3>2. Information We Collect</h3>
@@ -45,7 +50,7 @@ export default function PrivacyPage() {
                 </ul>
 
                 <h3>5. Contact Us</h3>
-                <p>If you have questions or comments about this policy, you may email us at support@techpulse.dev.</p>
+                <p>If you have questions or comments about this policy, you may email us at support@synapsedigest.dev.</p>
             </div>
         </div>
     )

@@ -34,7 +34,7 @@ export async function generateMetadata({ params }: { params: Promise<{ category:
     const { category } = await params
     const catName = category.toUpperCase()
     return {
-        title: `Latest ${catName} News & Research - TechPulse`,
+        title: `Latest ${catName} News & Research - SynapseDigest`,
         description: `Stay updated with the top ${catName} news, papers, and trends. Curated daily for engineers and researchers.`
     }
 }

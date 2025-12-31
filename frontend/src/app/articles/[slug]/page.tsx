@@ -32,7 +32,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     if (!article) return { title: 'Not Found' }
 
     return {
-        title: `${article.title} - TechPulse`,
+        title: `${article.title} - SynapseDigest`,
         description: article.summary.slice(0, 160),
         openGraph: {
             title: article.title,

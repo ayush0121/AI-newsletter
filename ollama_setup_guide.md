@@ -1,4 +1,4 @@
-# How to Setup Ollama Locally for TechPulse
+# How to Setup Ollama Locally for SynapseDigest
 
 ## 1. Install Ollama
 Download and install Ollama from the official website:
