@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { useAuth } from '@/context/AuthProvider';
 import { formatDistanceToNow } from 'date-fns';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api/v1';
 
 interface Notification {
     id: string;
@@ -26,7 +26,7 @@ export default function NotificationBell() {
     const fetchNotifications = async () => {
         if (!token) return;
         try {
-            const res = await fetch(`${API_URL}/api/v1/notifications/`, {
+            const res = await fetch(`${API_URL}/notifications/`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             if (res.ok) {
@@ -42,7 +42,7 @@ export default function NotificationBell() {
     const markRead = async (id: string) => {
         if (!token) return;
         try {
-            await fetch(`${API_URL}/api/v1/notifications/${id}/read`, {
+            await fetch(`${API_URL}/notifications/${id}/read`, {
                 method: 'POST',
                 headers: { 'Authorization': `Bearer ${token}` }
             });

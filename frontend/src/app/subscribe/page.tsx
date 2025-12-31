@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api/v1';
 
 export default function SubscribePage() {
     const [email, setEmail] = useState('');
@@ -13,7 +13,7 @@ export default function SubscribePage() {
         e.preventDefault();
         setStatus('loading');
         try {
-            const res = await fetch(`${API_URL}/api/v1/newsletter/subscribe`, {
+            const res = await fetch(`${API_URL}/newsletter/subscribe`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email }),

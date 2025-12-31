@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api/v1';
 
 interface Quote {
     id: string;
@@ -18,7 +18,7 @@ export default function VoicesSidebar() {
     const [failedImages, setFailedImages] = useState<Set<string>>(new Set());
 
     useEffect(() => {
-        fetch(`${API_URL}/api/v1/quotes/daily`)
+        fetch(`${API_URL}/quotes/daily`)
             .then(res => res.json())
             .then(data => {
                 setQuotes(data);

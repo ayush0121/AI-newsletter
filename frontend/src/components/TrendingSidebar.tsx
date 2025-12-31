@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { formatDistanceToNow } from 'date-fns';
 import VoicesSidebar from './VoicesSidebar';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api/v1';
 
 interface Article {
     id: string;
@@ -26,7 +26,7 @@ export default function TrendingSidebar() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetch(`${API_URL}/api/v1/articles/trending?limit=5`)
+        fetch(`${API_URL}/articles/trending?limit=5`)
             .then(res => res.json())
             .then(data => {
                 setArticles(data);

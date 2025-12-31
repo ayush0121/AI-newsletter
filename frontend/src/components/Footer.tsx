@@ -4,7 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useState } from 'react';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api/v1';
 
 export default function Footer() {
     const [email, setEmail] = useState('');
@@ -14,7 +14,7 @@ export default function Footer() {
         e.preventDefault();
         setStatus('loading');
         try {
-            const res = await fetch(`${API_URL}/api/v1/newsletter/subscribe`, {
+            const res = await fetch(`${API_URL}/newsletter/subscribe`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email }),
@@ -97,12 +97,11 @@ export default function Footer() {
                                 </button>
                             </div>
                             {status === 'error' && <p className="text-xs text-red-400">Something went wrong. Try again.</p>}
-                            {status === 'error' && <p className="text-xs text-red-400">Something went wrong. Try again.</p>}
                         </form>
 
                         <div className="mt-6">
                             <button
-                                onClick={() => window.open(`${API_URL}/api/v1/newsletter/download-pdf`, '_blank')}
+                                onClick={() => window.open(`${API_URL}/newsletter/download-pdf`, '_blank')}
                                 className="w-full flex items-center justify-center gap-2 px-4 py-2 border border-gray-700 hover:border-gray-500 rounded-md text-sm font-medium text-gray-300 hover:text-white transition-all bg-gray-900/50 hover:bg-gray-800"
                             >
                                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">

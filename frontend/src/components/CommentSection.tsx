@@ -5,7 +5,7 @@ import { useAuth } from '@/context/AuthProvider';
 import Link from 'next/link';
 import { formatDistanceToNow } from 'date-fns';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api/v1';
 
 
 
@@ -43,7 +43,7 @@ export default function CommentSection({ resourceId, resourceType, userVote }: C
         try {
             setLoading(true);
             const queryParam = resourceType === 'poll' ? `poll_id=${resourceId}` : `article_id=${resourceId}`;
-            const res = await fetch(`${API_URL}/api/v1/comments/list?${queryParam}`);
+            const res = await fetch(`${API_URL}/comments/list?${queryParam}`);
 
             // Fallback for old endpoint if list fails (temp dev safety)
             // if (!res.ok) ...
@@ -69,7 +69,7 @@ export default function CommentSection({ resourceId, resourceType, userVote }: C
             setPosting(true);
             const queryParams = resourceType === 'poll' ? `poll_id=${resourceId}` : `article_id=${resourceId}`;
 
-            const res = await fetch(`${API_URL}/api/v1/comments/?${queryParams}`, {
+            const res = await fetch(`${API_URL}/comments/?${queryParams}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

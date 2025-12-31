@@ -9,7 +9,7 @@ import NotificationBell from './NotificationBell';
 
 import ThemeToggle from './ThemeToggle';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api/v1';
 
 
 
@@ -24,7 +24,7 @@ export default function Header() {
     useEffect(() => {
         if (user && token) {
             console.log("Fetching user profile...");
-            fetch(`${API_URL}/api/v1/users/me`, {
+            fetch(`${API_URL}/users/me`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             })
                 .then(res => {

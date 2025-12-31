@@ -5,7 +5,7 @@ import { useAuth } from '@/context/AuthProvider';
 import Link from 'next/link';
 import { formatDistanceToNow } from 'date-fns';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api/v1';
 
 interface Comment {
     id: string;
@@ -37,7 +37,7 @@ export default function PollComments({ pollId, userVote }: PollCommentsProps) {
     const fetchComments = async () => {
         try {
             setLoading(true);
-            const res = await fetch(`${API_URL}/api/v1/polls/${pollId}/comments`);
+            const res = await fetch(`${API_URL}/polls/${pollId}/comments`);
             if (!res.ok) throw new Error('Failed to load comments');
             const data = await res.json();
             setComments(data);
@@ -55,7 +55,7 @@ export default function PollComments({ pollId, userVote }: PollCommentsProps) {
 
         try {
             setPosting(true);
-            const res = await fetch(`${API_URL}/api/v1/polls/${pollId}/comments`, {
+            const res = await fetch(`${API_URL}/polls/${pollId}/comments`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
