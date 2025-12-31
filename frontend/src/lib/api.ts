@@ -42,3 +42,24 @@ export async function fetchArticles(page: number = 1, limit: number = 20): Promi
     }
     return res.json();
 }
+
+export async function fetchPersonalizedArticles(token: string, limit: number = 50): Promise<Article[]> {
+    const res = await fetch(`${API_URL}/articles/for-you?limit=${limit}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        cache: 'no-store'
+    });
+
+    if (res.status === 401) {
+        throw new Error("Unauthorized");
+    }
+
+    if (!res.ok) {
+        throw new Error('Failed to fetch personalized articles');
+    }
+
+    return res.json();
+}

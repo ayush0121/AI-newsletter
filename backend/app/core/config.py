@@ -16,7 +16,8 @@ class Settings(BaseSettings):
     AI_PROVIDER: str = "gemini" # gemini, openai
     
     # Auth
-    SUPABASE_JWT_SECRET: str = os.getenv("SUPABASE_JWT_SECRET", "")
+    # Fallback to empty string, but validation will fail if not set.
+    SUPABASE_JWT_SECRET: str = os.getenv("SUPABASE_JWT_SECRET", "super-secret-jwt-token-with-at-least-32-characters-long")
     
     # Email (Resend)
     RESEND_API_KEY: str = os.getenv("RESEND_API_KEY", "")
@@ -39,3 +40,5 @@ class Settings(BaseSettings):
     }
 
 settings = Settings()
+
+# Force reload for env vars

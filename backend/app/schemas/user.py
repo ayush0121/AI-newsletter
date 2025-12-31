@@ -35,5 +35,6 @@ class User(UserBase):
     created_at: Optional[datetime] = None
     email_settings: Optional[EmailSettings] = None
 
+
     class Config:
         from_attributes = True

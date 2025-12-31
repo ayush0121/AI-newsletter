@@ -9,4 +9,14 @@ export interface Article {
     viability_score: number;
     published_at: string;
     created_at: string;
+    reactions_fire?: number;
+    reactions_mindblown?: number;
+    reactions_skeptical?: number;
+}
+
+export interface User {
+    id: string;
+    email: string;
+    full_name?: string;
+    interests?: string[];
 }

@@ -59,8 +59,120 @@ class AIService:
         except Exception as e:
             logger.error(f"AI processing failed ({self.provider}): {e}")
             return self._mock_response(f"Error ({self.provider})")
+    def extract_quote(self, text: str) -> dict | None:
+        """
+        Extracts a key quote and speaker from text.
+        Returns None if no clear quote/speaker found.
+        """
+        prompt = f"""
+        Analyze the following text (news article or transcript) and extract a single, impactful quote from a prominent tech figure.
+        
+        Text:
+        {text[:4000]}
+        
+        Task:
+        1. Identify if there is a direct quote from a named person (e.g., CEO, Researcher, Industry Leader).
+        2. If YES, extract the ONE most interesting/insightful sentence they said.
+        3. Identify their Name and Role.
+        4. If NO quote is found, or it's just general reporting, return NULL.
+        
+        Output valid JSON:
+        {{
+            "found": true,
+            "text": "The quote text here...",
+            "author": "Name Lastname",
+            "role": "CEO, Company"
+        }}
+        OR
+        {{ "found": false }}
+        """
+        
+        try:
+            # Reusing gemini generic processor for simplicity
+            response_json = self._process_gemini_generic(prompt)
+            if response_json and response_json.get("found"):
+                return response_json
+            return None
+        except Exception:
+            return None
 
-    def _process_gemini(self, prompt):
+            return self._mock_response(f"Error ({self.provider})")
+
+    def _process_gemini_generic(self, prompt: str) -> dict:
+        """Helper to call Gemini and parse JSON safely"""
+        # Fallback list of models to try
+        models_to_try = [
+            'gemini-2.0-flash',        # Confirmed
+            'gemini-flash-latest',     # Fallback
+            'gemini-pro-latest',       # Fallback Pro
+        ]
+
+        last_error = None
+        for model_name in models_to_try:
+            try:
+                model = genai.GenerativeModel(model_name)
+                # Simple retry logic for 429
+                for attempt in range(2):
+                    try:
+                        response = model.generate_content(prompt)
+                        return self._parse_json(response.text)
+                    except Exception as e:
+                        if "429" in str(e):
+                            time.sleep(2)
+                            continue
+                        raise e
+            except Exception as e:
+                last_error = e
+                continue
+        logger.error(f"Gemini Generic failed: {last_error}")
+        return {}
+
+    def generate_poll(self, context_text: str) -> dict:
+        prompt = f"""
+        Based on the following news headlines/summaries from today:
+        {context_text[:2000]}
+        
+        Generate a single interesting, controversial, or thought-provoking "Daily Poll" question for a tech newsletter audience (Engineers, AI Researchers).
+        
+        Task:
+        1. Create a question that sparks debate or curiosity.
+        2. Provide 3-4 distinct options.
+        3. Do not include mock votes, just the option text and an ID.
+        
+        Output valid JSON format:
+        {{
+            "question": "Can AI code better than humans?",
+            "options": [
+                {{"id": "opt1", "text": "Yes, already happening", "votes": 0}},
+                {{"id": "opt2", "text": "Not yet, but soon", "votes": 0}},
+                {{"id": "opt3", "text": "No, human creativity is unique", "votes": 0}}
+            ]
+        }}
+        """
+        
+        try:
+            if self.provider == "gemini":
+                # Reuse gemini helper but parse differently as needed or just use process_gemini logic
+                # For simplicity, calling _process_gemini directly since it returns parsed JSON
+                # Check _process_gemini implementation, it calls _parse_json which fills defaults. 
+                # We need a cleaner raw JSON parser for this specific schema.
+                return self._process_gemini_generic(prompt)
+            else:
+                 # Fallback for simplicity
+                 return self._mock_poll()
+        except Exception as e:
+            logger.error(f"Poll generation failed: {e}")
+            return self._mock_poll()
+
+    def _mock_poll(self):
+        return {
+            "question": "What is the biggest trend in tech today?",
+            "options": [
+                {"id": "opt1", "text": "Generative AI", "votes": 0},
+                {"id": "opt2", "text": "Quantum Computing", "votes": 0},
+                {"id": "opt3", "text": "Web3 & Crypto", "votes": 0}
+            ]
+        }
         if not settings.GEMINI_API_KEY:
             return self._mock_response("Gemini Key Missing")
         

@@ -110,6 +110,73 @@ class IngestionService:
                     self.db.rollback()
                     continue
             
+                    self.db.commit() # Commit individually
+                    new_articles_count += 1
+                except Exception as loop_e:
+                    logger.error(f"Failed to process article {raw['title']}: {loop_e}")
+                    self.db.rollback()
+                    continue
+            
+            # 6. Extract Quotes from Interviews/Speeches (Updated Feature)
+            # Scan the newly processed raw articles for quote-worthy content
+            logger.info("Scanning for quotes...")
+            keywords = ["interview", "speech", "talk", "says", "warns", "predicts", "statement", "keynote"]
+            from app.db.models import Quote
+            
+            for raw in all_raw_articles:
+                # Basic filter to save tokens
+                text_to_scan = raw['title'].lower()
+                if any(k in text_to_scan for k in keywords):
+                    try:
+                        # Use full content if available, else snippet
+                        content_scan = raw.get('content') or raw.get('summary') or raw['title']
+                        quote_data = ai_service.extract_quote(content_scan)
+                        
+                        if quote_data and quote_data.get('found'):
+                            # Check duplicate text
+                            exists = self.db.query(Quote).filter(Quote.text == quote_data['text']).first()
+                            if not exists:
+                                # Fallback avatar logic -> Wiki or None (frontend handles fallbacks)
+                                q = Quote(
+                                    text=quote_data['text'],
+                                    author=quote_data['author'],
+                                    role=quote_data.get('role'),
+                                    source_url=raw['url']
+                                )
+                                self.db.add(q)
+                                self.db.commit()
+                                logger.info(f"Extracted Quote from {quote_data['author']}")
+                    except Exception as e:
+                        logger.error(f"Quote extraction failed for {raw['title']}: {e}")
+
+            # 5. Generate Daily Poll if new articles were added (or even if not, to keep it fresh based on feed)
+            if new_articles_count > 0 or len(all_raw_articles) > 0:
+                logger.info("Generating Daily Poll...")
+                try:
+                    # Context from top 5 articles
+                    context_articles = all_raw_articles[:5]
+                    context_text = "\n".join([f"- {a['title']}: {a.get('content', '')[:100]}..." for a in context_articles])
+                    
+                    poll_data = ai_service.generate_poll(context_text)
+                    
+                    if poll_data:
+                        from app.db.models import Poll
+                        # Deactivate old polls
+                        self.db.query(Poll).update({Poll.is_active: False})
+                        
+                        # Create new poll
+                        new_poll = Poll(
+                            question=poll_data.get("question", "What is the most exciting tech today?"),
+                            options=poll_data.get("options", []),
+                            is_active=True
+                        )
+                        self.db.add(new_poll)
+                        self.db.commit()
+                        logger.info(f"Created new Daily Poll: {new_poll.question}")
+                except Exception as poll_e:
+                    logger.error(f"Failed to generate daily poll: {poll_e}")
+                    # Don't fail the whole job
+            
             # Update Log
             log_entry.status = "SUCCESS"
             log_entry.articles_added = new_articles_count

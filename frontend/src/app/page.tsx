@@ -1,6 +1,10 @@
 import Link from 'next/link';
 import { fetchArticlesToday, fetchTrendingArticles, fetchArticlesByCategory } from '@/lib/api';
 import ArticleCard from '@/components/ArticleCard';
+import NewsletterForm from '@/components/NewsletterForm';
+import DailyPoll from '@/components/DailyPoll';
+import FeedTabs from '@/components/FeedTabs';
+import TrendingSidebar from '@/components/TrendingSidebar';
 import { Article } from '@/types';
 
 // Revalidate every hour
@@ -38,7 +42,7 @@ export default async function Home() {
     return (
       <section>
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold text-gray-900">{title}</h2>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 transition-colors">{title}</h2>
           {link && (
             <Link href={link} className="text-indigo-600 hover:text-indigo-800 text-sm font-medium">
               View All &rarr;
@@ -56,41 +60,37 @@ export default async function Home() {
 
   return (
     <div className="space-y-16">
-      <section>
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-3xl font-extrabold text-gray-900">Today's Highlights</h2>
-          <span className="text-sm text-gray-500">{new Date().toLocaleDateString()}</span>
+      <div className="text-center py-8 md:py-12 space-y-3">
+        <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-gray-900 dark:text-white transition-colors">
+          Changing minds with latest news
+        </h1>
+        <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto transition-colors">
+          in the <span className="text-indigo-600 dark:text-indigo-400 font-semibold">AI</span> and <span className="text-purple-600 dark:text-purple-400 font-semibold">Software Engineering</span> field
+        </p>
+        <div className="flex flex-col items-center gap-8 w-full max-w-2xl mx-auto">
+          <NewsletterForm />
+          <div className="w-full">
+            <DailyPoll />
+          </div>
+        </div>
+      </div>
+
+      <div className="flex gap-8 items-start">
+        {/* Main Feed Content */}
+        <div className="flex-1 min-w-0">
+          <div className="mb-12">
+            <FeedTabs articlesToday={articlesToday} articlesTrending={articlesTrending} />
+          </div>
+
+          {renderSection("Artificial Intelligence", articlesAI, "/news/ai")}
+          {renderSection("Computer Science", articlesCS, "/news/cs")}
+          {renderSection("Software Engineering", articlesSE, "/news/se")}
+          {renderSection("Research Papers", articlesResearch, "/news/research")}
         </div>
 
-        {articlesToday.length === 0 ? (
-          <div className="text-center py-12 bg-white rounded-lg border border-gray-200">
-            <p className="text-gray-500">No new articles found today (yet).</p>
-            <p className="text-sm text-gray-400 mt-1">Check back later after the daily ingestion runs.</p>
-          </div>
-        ) : (
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {articlesToday.map((article) => (
-              <ArticleCard key={article.id} article={article} />
-            ))}
-          </div>
-        )}
-      </section>
-
-      {articlesTrending.length > 0 && (
-        <section>
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Trending this Week</h2>
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {articlesTrending.map((article) => (
-              <ArticleCard key={article.id} article={article} />
-            ))}
-          </div>
-        </section>
-      )}
-
-      {renderSection("Artificial Intelligence", articlesAI, "/news/ai")}
-      {renderSection("Computer Science", articlesCS, "/news/cs")}
-      {renderSection("Software Engineering", articlesSE, "/news/se")}
-      {renderSection("Research Papers", articlesResearch, "/news/research")}
+        {/* Sidebar (Desktop Only) */}
+        <TrendingSidebar />
+      </div>
     </div>
   );
 }

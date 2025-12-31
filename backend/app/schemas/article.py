@@ -21,6 +21,9 @@ class Article(ArticleBase):
     id: UUID
     created_at: datetime
     viability_score: int
+    reactions_fire: int = 0
+    reactions_mindblown: int = 0
+    reactions_skeptical: int = 0
 
     class Config:
         from_attributes = True
